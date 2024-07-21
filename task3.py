@@ -76,6 +76,20 @@ class Lecturer(Mentor):
         else:
             #print("Нет ни одной оценки за лекцию...")
             return 0
+        
+    #Методы сравнения по средней оценке - в лекции было сказано, что можно реализовать только == и <
+    def __lt__(self, other):
+        if self._all_courses_average_rating() < other._all_courses_average_rating():
+            return True
+        else:
+            return False
+
+    def __eq__(self, other):
+        if self._all_courses_average_rating() == other._all_courses_average_rating():
+            return True
+        else:
+            return False   
+
 
 class Reviewer(Mentor):
     def __init__(self, name, surname):
@@ -103,7 +117,9 @@ best_student = Student('Ivan', 'Pupkhin', 'prefer_not_say')
 best_student.add_course('Выпечка эчпочмаков')
 best_student.add_course('ЯП Brainfcuk')
 sanya = Student('Alexander', 'Ivanoff', 'Male')
-sanya.courses_in_progress += ['Выпечка эчпочмаков', 'Компьютерные сети и снасти']
+#sanya.courses_in_progress += ['Выпечка эчпочмаков', 'Компьютерные сети и снасти']
+sanya.add_course('Выпечка эчпочмаков')
+sanya.add_course('Компьютерные сети и снасти')
 #Придумываем ревьюверов, и они ставят студентам оценки
 cool_mentor = Reviewer('Мария', 'Аспирантовна-Ревьюер')
 cool_mentor.courses_attached += ['Выпечка эчпочмаков', 'ЯП Brainfcuk']
@@ -126,10 +142,19 @@ best_student.rate_lecturer('Выпечка эчпочмаков', 10, some_lectu
 sanya.rate_lecturer('Выпечка эчпочмаков', 5, some_lecturer)
 best_student.rate_lecturer('Компьютерные сети и снасти', 10, some_lecturer)
 #Выставляем оценку лектору по несуществующему курсу
-
 # print(some_lecturer.courses_rating)
+some_lecturer_2 = Lecturer('Константин', 'Златоустов')
+some_lecturer.courses_attached += ['Выпечка эчпочмаков', 'Компьютерные сети и снасти']
+sanya.rate_lecturer('Компьютерные сети и снасти', 7, some_lecturer_2)
+
+
 
 print(f'РЕВЬЮЕР:\n{cool_mentor}\n----------')
 print(f'ЛЕКТОР:\n{some_lecturer}\n----------')
+print(f'ЛЕКТОР:\n{some_lecturer_2}\n----------')
 print(f'СТУДЕНТ:\n{sanya}\n----------')
 print(f'СТУДЕНТ:\n{best_student}\n----------')
+
+print("Сравнение лекторов:")
+print(some_lecturer_2 < some_lecturer)
+print(some_lecturer == some_lecturer_2)
